@@ -851,7 +851,7 @@ This project is licensed under the MIT License.
 
 **Ayush Shard Singh**
 
-- GitHub: [@ayushshardsingh](https://github.com/ayushshardsingh)
+- GitHub: [(https://github.com/BONGCHII/)]
 
 ## 🙏 Acknowledgments
 
