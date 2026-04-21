@@ -430,39 +430,41 @@ aws dynamodb scan \
 
 ### Sample DynamoDB Record
 
-```json
-{
-  "analysis_date": "2024-01-15",
-  "log_id": "log-1705324335-abc123",
-  "service": "payment-api",
-  "timestamp": "2024-01-15T14:32:15Z",
-  "log_level": "ERROR",
-  "result": {
-    "confidence": {
-      "boost_applied": 0.25,
-      "boost_reasons": [
-        "Latency metric anomaly matches root cause (+0.15)",
-        "High severity incident detected (+0.10)"
-      ],
-      "final_score": 0.65,
-      "raw_similarity": 0.40,
-      "trust_level": "MEDIUM"
-    },
-    "probable_root_cause": "Downstream payment gateway timeout causing transaction failures",
-    "recommendation": "Probable cause (verify manually): Downstream payment gateway timeout causing transaction failures",
-    "recommended_actions": [
-      "Check payment gateway connectivity",
-      "Increase connection pool size",
-      "Review timeout configurations"
-    ],
-    "similar_incidents": [
-      "INC-0001",
-      "INC-0002",
-      "INC-0010"
-    ]
-  },
-  "status": "success"
-}
+```json                                                                                                                                                                    
+  {                                                                                                                                                                                            
+    "analysis_date": "2024-01-15",                          
+    "log_id": "log-1705324335-abc123",                                                                                                                                                         
+    "service": "payment-api",                                                                                                                                                                  
+    "timestamp": "2024-01-15T14:32:15Z",                                                                                                                                                       
+    "log_level": "ERROR",                                                                                                                                                                      
+    "original_error_message": "ERROR: Payment gateway timeout - Transaction processing failed after 5000ms waiting for response from payment-gateway.api.example.com:443",                     
+    "stack_trace": "TimeoutException: Connection timeout\n  at PaymentGatewayClient.process(PaymentGateway.java:142)\n  at OrderController.checkout(OrderController.java:87)",                 
+    "result": {                                                                                                                                                                                
+      "confidence": {                                                                                                                                                                          
+        "boost_applied": 0.25,                                                                                                                                                                 
+        "boost_reasons": [                                                                                                                                                                     
+          "Latency metric anomaly matches root cause (+0.15)",                                                                                                                                 
+          "High severity incident detected (+0.10)"                                                                                                                                            
+        ],                                                                                                                                                                                     
+        "final_score": 0.65,                                                                                                                                                                   
+        "raw_similarity": 0.40,                                                                                                                                                                
+        "trust_level": "MEDIUM"                                                                                                                                                                
+      },                                                                                                                                                                                       
+      "probable_root_cause": "Downstream payment gateway timeout causing transaction failures",                                                                                                
+      "recommendation": "Probable cause (verify manually): Downstream payment gateway timeout causing transaction failures",                                                                   
+      "recommended_actions": [                                                                                                                                                                 
+        "Check payment gateway connectivity",                                                                                                                                                  
+        "Increase connection pool size",                                                                                                                                                       
+        "Review timeout configurations"                                                                                                                                                        
+      ],                                                                                                                                                                                       
+      "similar_incidents": [                                                                                                                                                                   
+        "INC-0001",                                                                                                                                                                            
+        "INC-0002",                                                                                                                                                                            
+        "INC-0010"                                                                                                                                                                             
+      ]                                                                                                                                                                                        
+    },                                                                                                                                                                                         
+    "status": "success"                                                                                                                                                                        
+  } 
 ```
 
 ## 📊 Credibility Scoring System
