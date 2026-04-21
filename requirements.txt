@@ -1,0 +1,103 @@
+# AI Root Cause Analyzer - Python Dependencies
+# ==================================================
+# This file lists all Python packages required for the Lambda function
+
+# Core AWS SDK
+# -------------
+boto3==1.28.25          # AWS SDK for Python (S3, DynamoDB, Lambda)
+botocore==1.31.25       # Low-level AWS service access
+
+# Deep Learning & NLP
+# --------------------
+torch==2.0.1            # PyTorch CPU-only (use --index-url flag during install)
+transformers==4.30.2    # HuggingFace Transformers library
+tokenizers==0.13.3      # Fast tokenizers for transformers
+sentence-transformers==2.2.2  # Sentence embeddings (all-MiniLM-L6-v2 model)
+huggingface-hub==0.16.4      # Model downloading from HuggingFace
+safetensors==0.3.1      # Safe tensor serialization format
+
+# Vector Search
+# -------------
+faiss-cpu==1.7.4        # Facebook AI Similarity Search (CPU version)
+
+# Numerical Computing
+# -------------------
+numpy==1.24.3           # Numerical computing library
+
+# Image Processing (required by torch)
+# -------------------------------------
+Pillow==10.0.0          # Python Imaging Library
+
+# Installation Instructions:
+# ==========================
+
+# Standard installation (for local development):
+# -----------------------------------------------
+# pip install -r requirements.txt
+
+# Lambda-optimized installation (for Dockerfile):
+# -----------------------------------------------
+# Install in this order for optimal layer caching:
+
+# 1. Install Pillow first
+# pip install --no-cache-dir Pillow==10.0.0
+
+# 2. Install PyTorch CPU-only (saves ~800MB)
+# pip install --no-cache-dir torch==2.0.1 --index-url https://download.pytorch.org/whl/cpu
+
+# 3. Install transformers ecosystem
+# pip install --no-cache-dir transformers==4.30.2 tokenizers==0.13.3 \
+#   huggingface-hub==0.16.4 safetensors==0.3.1
+
+# 4. Install sentence-transformers and FAISS
+# pip install --no-cache-dir sentence-transformers==2.2.2 faiss-cpu==1.7.4
+
+# 5. Install AWS SDK
+# pip install --no-cache-dir boto3==1.28.25 botocore==1.31.25 numpy==1.24.3
+
+# Pre-download model (for Dockerfile):
+# -------------------------------------
+# python3 -c "from sentence_transformers import SentenceTransformer; \
+#   SentenceTransformer('all-MiniLM-L6-v2')"
+
+# Package Sizes (approximate):
+# =============================
+# torch (CPU):              ~500 MB
+# sentence-transformers:     ~20 MB
+# transformers:              ~50 MB
+# faiss-cpu:                 ~25 MB
+# boto3 + botocore:          ~40 MB
+# numpy:                     ~20 MB
+# Other dependencies:        ~30 MB
+# -----------------------------------------
+# Total:                    ~685 MB
+# Model (all-MiniLM-L6-v2):  ~80 MB
+# -----------------------------------------
+# Grand Total:              ~765 MB
+
+# Version Compatibility Notes:
+# =============================
+# - torch 2.0.1: Stable, good performance on CPU
+# - sentence-transformers 2.2.2: Compatible with transformers 4.30.x
+# - faiss-cpu 1.7.4: Latest stable version for CPU
+# - boto3 1.28.25: Recent version with DynamoDB enhancements
+# - numpy 1.24.3: Compatible with all above packages
+
+# Python Version:
+# ===============
+# Python 3.9+ required (Lambda base image uses Python 3.9)
+
+# Optional Development Dependencies (not needed in Lambda):
+# ==========================================================
+# pytest==7.4.0           # Testing framework
+# black==23.7.0           # Code formatter
+# flake8==6.1.0           # Linting
+# mypy==1.4.1             # Type checking
+# ipython==8.14.0         # Interactive shell
+
+# Security Notes:
+# ===============
+# All package versions are pinned to avoid supply chain attacks
+# Regularly update dependencies and scan for vulnerabilities:
+# pip install pip-audit
+# pip-audit -r requirements.txt
